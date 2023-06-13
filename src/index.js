@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom/cjs/react-router-dom';
 
 import './index.css';
 import App from './App';
+import { AuthContextProvider } from './component/store/auth-context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<BrowserRouter><App /></BrowserRouter>);
+root.render(<AuthContextProvider><BrowserRouter><App /></BrowserRouter></AuthContextProvider>)
