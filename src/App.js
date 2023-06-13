@@ -5,12 +5,16 @@ import { Route} from 'react-router-dom';
 import Home from './component/pages/Home';
 import Login from './component/pages/Login';
 import Updateprofile from './component/pages/Updateprofile';
+import CNavbar from './component/NavBar';
+
 
 function App() {
   // const authCtx = useContext(AuthContext);
 
   return (
     <div className="App">
+      <CNavbar/>
+      
       {/* <Switch> */}
       <Route path='/profile'>
       <Updateprofile/>

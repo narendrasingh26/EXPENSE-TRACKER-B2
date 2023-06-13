@@ -309,6 +309,7 @@ export const AuthContextProvider = (props) => {
   const firstToken = localStorage.getItem("token");
   const [token, setToken] = useState(firstToken);
   const [userProfile, setUserProfile] = useState(null);
+  // eslint-disable-next-line
   const [emailVerificationSent, setEmailVerificationSent] = useState(false);
 
   const userIsLoggedIn = !!token;
