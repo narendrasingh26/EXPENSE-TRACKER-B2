@@ -9,10 +9,12 @@ const Home = () => {
     authCtx.sendEmailVerification();
     console.log('sendEmailVerification',authCtx.sendEmailVerification())
   };
+  
 
   return (
     <div>
       <h1>Welcome to Expense Tracker</h1>
+      
       
         <>
           <div>

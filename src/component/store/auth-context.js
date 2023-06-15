@@ -317,7 +317,7 @@ export const AuthContextProvider = (props) => {
   const loginHandler = (tkn) => {
     setToken(tkn);
     localStorage.setItem("token", tkn);
-    getUserProfile(); 
+    // getUserProfile(); 
   };
 
   const logoutHandler = () => {
@@ -410,17 +410,17 @@ export const AuthContextProvider = (props) => {
   };
 
   return (
-    <AuthContext.Provider value={authContextValue}>
-      {props.children}
-    </AuthContext.Provider>
     // <AuthContext.Provider value={authContextValue}>
-    //   {emailVerificationSent ? (
-    //     <div>Email verification sent!</div>
-    //   ) : (
-    //     props.children
-        
-    //   )}
+    //   {props.children}
     // </AuthContext.Provider>
+    <AuthContext.Provider value={authContextValue}>
+      {emailVerificationSent ? (
+        <div>Email verification sent!</div>
+      ) : (
+        props.children
+        
+      )}
+    </AuthContext.Provider>
   );
 };
 

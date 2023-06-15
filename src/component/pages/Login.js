@@ -5,14 +5,16 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 import classes from "./Login.module.css";
 import AuthContext from "../store/auth-context";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Login = () => {
   const history = useHistory();
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-  const confirmPasswordInputRef = useRef('');
+  const confirmPasswordInputRef = useRef("");
 
   const [isLogin, setIsLogin] = useState(true);
+
   const authCtx = useContext(AuthContext);
 
   const switchAuthModeHandler = () => {
@@ -20,158 +22,59 @@ const Login = () => {
   };
 
   const signupHandler = async (event) => {
-        event.preventDefault();
-        
-        const emailEntered = emailInputRef.current.value;
-        const passwordEntered = passwordInputRef.current.value;
-        const confirmPasswordEntered = confirmPasswordInputRef.current.value;
-        const emailRegEx = emailEntered.replace(/[^a-zA-Z0-9 ]/g, "");
-        let url="https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCA46gocHDViaISYg1lCBrbs8uhf59zHk4"
+    event.preventDefault();
 
-        sendData(url, emailEntered, passwordEntered,confirmPasswordEntered)
-                .then((result) => {
-                  console.log("result", result);
-                  authCtx.login(result.idToken);
-                
-                  localStorage.setItem("email", emailRegEx);
-                  localStorage.setItem("token", result.idToken);
+    const emailEntered = emailInputRef.current.value;
+    const passwordEntered = passwordInputRef.current.value;
+    const confirmPasswordEntered = confirmPasswordInputRef.current.value;
+    const emailRegEx = emailEntered.replace(/[^a-zA-Z0-9 ]/g, "");
+    let url =
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCA46gocHDViaISYg1lCBrbs8uhf59zHk4";
 
-                  emailInputRef.current.value = "";
-                  passwordInputRef.current.value = "";
-                  confirmPasswordInputRef.current.value = "";
-                  console.log("User successfully signed up");
-                //   history.push("/home");
-                
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            };
+    sendData(url, emailEntered, passwordEntered, confirmPasswordEntered)
+      .then((result) => {
+        console.log("result", result);
+        authCtx.login(result.idToken);
 
-            const loginHandler = async (event) => {
-              event.preventDefault();
-            
-              const emailEntered = emailInputRef.current.value;
-              const passwordEntered = passwordInputRef.current.value;
-              const emailRegEx = emailEntered.replace(/[^a-zA-Z0-9 ]/g, "");
-              let url =
-                "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCA46gocHDViaISYg1lCBrbs8uhf59zHk4";
-            
-              sendData(url, emailEntered, passwordEntered)
-                .then((result) => {
-                  console.log("result", result);
-                  authCtx.login(result.idToken);
-            
-                  localStorage.setItem("email", emailRegEx);
-                  localStorage.setItem("token", result.idToken);
-            
-                  emailInputRef.current.value = "";
-                  passwordInputRef.current.value = "";
-                  history.push("/home");
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            };
-            
+        localStorage.setItem("email", emailRegEx);
+        localStorage.setItem("token", result.idToken);
 
+        emailInputRef.current.value = "";
+        passwordInputRef.current.value = "";
+        confirmPasswordInputRef.current.value = "";
+        console.log("User successfully signed up");
+        //   history.push("/home");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-            // const LoginHandler = async (event) => {
-            //     event.preventDefault();
-                
-            //     const emailEntered = emailInputRef.current.value;
-            //     const passwordEntered = passwordInputRef.current.value;
-            //     // const confirmPasswordEntered = confirmPasswordInputRef.current.value;
-            //     const emailRegEx = emailEntered.replace(/[^a-zA-Z0-9 ]/g, "");
-            //     let url="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCA46gocHDViaISYg1lCBrbs8uhf59zHk4"
-        
-            //     sendData(url, emailEntered, passwordEntered)
-            //             .then((result) => {
-            //               console.log("result", result);
-            //               authCtx.login(result.idToken);
-                        
-            //               localStorage.setItem("email", emailRegEx);
-            //               localStorage.setItem("token", result.idToken);
+  const loginHandler = async (event) => {
+    event.preventDefault();
 
-            //               emailInputRef.current.value = "";
-            //               passwordInputRef.current.value = "";
-            //             //   confirmPasswordInputRef.current.value = "";
-            //             //   console.log("User successfully signed up");
-            //               history.push("/home");
-                        
-            //             })
-            //             .catch((error) => {
-            //               console.log(error);
-            //             });
-                    // }
+    const emailEntered = emailInputRef.current.value;
+    const passwordEntered = passwordInputRef.current.value;
+    const emailRegEx = emailEntered.replace(/[^a-zA-Z0-9 ]/g, "");
+    let url =
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCA46gocHDViaISYg1lCBrbs8uhf59zHk4";
 
-//   const submitHandler = async (event) => {
-//     event.preventDefault();
-    
-//     const emailEntered = emailInputRef.current.value;
-//     const passwordEntered = passwordInputRef.current.value;
-//     const confirmPasswordEntered = confirmPasswordInputRef.current.value;
-//     const emailRegEx = emailEntered.replace(/[^a-zA-Z0-9 ]/g, "");
-//     let url;
-//     if (isLogin) {
-//       url =
-//         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCA46gocHDViaISYg1lCBrbs8uhf59zHk4";
+    sendData(url, emailEntered, passwordEntered)
+      .then((result) => {
+        console.log("result", result);
+        authCtx.login(result.idToken);
 
-//         sendData(url, emailEntered, passwordEntered)
-//         .then((result) => {
-//           console.log("result", result);
-//           authCtx.login(result.idToken);
-          
-//           localStorage.setItem("email", emailRegEx);
-//           emailInputRef.current.value = "";
-//           passwordInputRef.current.value = "";
-//         //   confirmPasswordInputRef.current.value = "";
-//           console.log("User successfully signed up");
-//           history.push("/home");
-        
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//         });
-        
-//     } else {
-//       url =
-//         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCA46gocHDViaISYg1lCBrbs8uhf59zHk4";
+        localStorage.setItem("email", emailRegEx);
+        localStorage.setItem("token", result.idToken);
 
-//         sendData(url, emailEntered, passwordEntered, confirmPasswordEntered)
-//         .then((result) => {
-//           console.log("result", result);
-//           authCtx.login(result.idToken);
-          
-//           localStorage.setItem("email", emailRegEx);
-//           emailInputRef.current.value = "";
-//           passwordInputRef.current.value = "";
-//           confirmPasswordInputRef.current.value = "";
-//           console.log("User successfully signed up");
-//           history.push("/home");
-        
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//         });
-//     }
-    // sendData(url, emailEntered, passwordEntered, confirmPasswordEntered)
-    //   .then((result) => {
-    //     console.log("result", result);
-    //     authCtx.login(result.idToken);
-        
-    //     localStorage.setItem("email", emailRegEx);
-    //     emailInputRef.current.value = "";
-    //     passwordInputRef.current.value = "";
-    //     confirmPasswordInputRef.current.value = "";
-    //     console.log("User successfully signed up");
-    //     history.push("/home");
-      
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  
+        emailInputRef.current.value = "";
+        passwordInputRef.current.value = "";
+        history.push("/home");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const sendData = async (url, email, password, confirmpassword) => {
     const response = await fetch(url, {
@@ -179,7 +82,7 @@ const Login = () => {
       body: JSON.stringify({
         email: email,
         password: password,
-         confirmpassword : confirmpassword,
+        confirmpassword: confirmpassword,
         returnSecureToken: true,
       }),
       headers: {
@@ -201,7 +104,7 @@ const Login = () => {
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
-      <form  onSubmit={isLogin ? loginHandler : signupHandler}>
+      <form onSubmit={isLogin ? loginHandler : signupHandler}>
         <div className={classes.control}>
           <label htmlFor="email" style={{ marginLeft: "-18rem" }}>
             Your Email
@@ -218,7 +121,6 @@ const Login = () => {
             id="password"
             required
             ref={passwordInputRef}
-            
           />
         </div>
 
@@ -232,15 +134,15 @@ const Login = () => {
               id="confirmPassword"
               required
               ref={confirmPasswordInputRef}
-              
             />
           </div>
         )}
-
+          <Link to='/forget'>Forget Password?</Link>
         <div className={classes.actions}>
-           {isLogin && <button>Login</button>}
-           {!isLogin && <button>Signup</button>}
-         
+          
+          {isLogin && <button>Login</button>}
+          {!isLogin && <button>Signup</button>}
+
           <button
             type="button"
             className={classes.toggle}

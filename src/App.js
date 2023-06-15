@@ -6,6 +6,7 @@ import Home from './component/pages/Home';
 import Login from './component/pages/Login';
 import Updateprofile from './component/pages/Updateprofile';
 import CNavbar from './component/NavBar';
+import Forget from './component/pages/Forget';
 
 
 function App() {
@@ -14,6 +15,9 @@ function App() {
   return (
     <div className="App">
       <CNavbar/>
+      <Route path='/forget'>
+        <Forget/>
+      </Route>
       
       {/* <Switch> */}
       <Route path='/profile'>
