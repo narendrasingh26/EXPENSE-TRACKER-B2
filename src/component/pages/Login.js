@@ -69,7 +69,7 @@ const Login = () => {
 
         emailInputRef.current.value = "";
         passwordInputRef.current.value = "";
-        history.push("/home");
+        history.push("/main");
       })
       .catch((error) => {
         console.log(error);

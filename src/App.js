@@ -7,6 +7,7 @@ import Login from './component/pages/Login';
 import Updateprofile from './component/pages/Updateprofile';
 import CNavbar from './component/NavBar';
 import Forget from './component/pages/Forget';
+import AddExpense from './component/Mainpage';
 
 
 function App() {
@@ -15,6 +16,10 @@ function App() {
   return (
     <div className="App">
       <CNavbar/>
+      <Route path='/main'>
+      <AddExpense/>
+      </Route>
+      
       <Route path='/forget'>
         <Forget/>
       </Route>

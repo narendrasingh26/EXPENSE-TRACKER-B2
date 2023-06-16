@@ -37,7 +37,7 @@ function CNavbar() {
           fontSize: "0.75rem",
           padding: "0.25rem 0.5rem",
           fontWeight: "bold",
-          marginLeft:'43rem',
+          marginLeft:'63rem',
           marginTop:'-5px'
         }} onClick={logoutHandler}>Logout</button>}
       </Navbar.Collapse>
