@@ -1,0 +1,16 @@
+/* light-theme.css */
+
+.app.light {
+    /* Light theme styles */
+    background-color: #ffffff;
+    color: #000000;
+  }
+  
+  .app.light h1 {
+    color: #000000;
+  }
+  
+  .app.light .list-group-item {
+    background-color: #98ecd2;
+  }
+  

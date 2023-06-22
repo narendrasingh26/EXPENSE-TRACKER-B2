@@ -2,16 +2,20 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 
+
 import AuthContext from "./store/auth-context";
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 function CNavbar() {
   const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
+  // const isLoggedIn = authCtx.isLoggedIn;
   const history = useHistory();
+ const showCart= useSelector(state=>state.auth.isLoggedIn)
 
   const logoutHandler = () => {
     authCtx.logout();
+    console.log('logout done')
     history.replace("/login");
   };
   return (
@@ -25,13 +29,13 @@ function CNavbar() {
          
         
        
-          {!isLoggedIn && (
+          {!showCart && (
             <Nav.Link as={Link} to="/login">
               Login
             </Nav.Link>
           )}
         </Nav>
-        {isLoggedIn && <button type="button"
+        {showCart && <button type="button"
         className="btn btn-primary position-relative "
         style={{
           fontSize: "0.75rem",

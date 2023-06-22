@@ -9,7 +9,7 @@ const Forget = () => {
 
    const fPasswordHandler= async (e)=>{
     e.preventDefault();
-    
+
      const enteredEmail=emailRef.current.value;
 
      let url='https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCA46gocHDViaISYg1lCBrbs8uhf59zHk4'
@@ -29,7 +29,7 @@ const Forget = () => {
           body: JSON.stringify({
             requestType:"PASSWORD_RESET",
             email: email,
-            
+
             // returnSecureToken: true,
           }),
           headers: {
@@ -47,8 +47,6 @@ const Forget = () => {
         }
         throw new Error(errorMessage);
       };
-
-
 
   return (
     <div>

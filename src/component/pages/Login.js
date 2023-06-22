@@ -1,6 +1,5 @@
 import { useState, useRef, useContext } from "react";
-// import {Link} from 'react-router-dom'
-// import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 import classes from "./Login.module.css";
@@ -139,7 +138,7 @@ const Login = () => {
         )}
           <Link to='/forget'>Forget Password?</Link>
         <div className={classes.actions}>
-          
+
           {isLogin && <button>Login</button>}
           {!isLogin && <button>Signup</button>}
 
@@ -157,3 +156,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+

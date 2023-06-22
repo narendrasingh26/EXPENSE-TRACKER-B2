@@ -1,0 +1,17 @@
+/* dark-theme.css */
+
+.app.dark {
+    /* Dark theme styles */
+    background-color: #222222;
+    color: #ffffff;
+  }
+  
+  .app.dark h1 {
+    color: #ffffff;
+  }
+  
+  .app.dark .list-group-item {
+    background-color: #222222;
+    color: #ffffff;
+  }
+  

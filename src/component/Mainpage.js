@@ -1,27 +1,86 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Form, Button, ListGroup, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import "./light-theme.css";
+import "./dark-theme.css";
+
+const initialState = {
+  theme: "light",
+};
+
+const themeReducer = (state, action) => {
+  switch (action.type) {
+    case "TOGGLE_THEME":
+      return { theme: state.theme === "light" ? "dark" : "light" };
+    default:
+      return state;
+  }
+};
 
 const AddExpense = () => {
+  // const emailRegEx = localStorage.getItem("email");
+
   const [moneySpent, setMoneySpent] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [products, setProducts] = useState([]);
   const [expenseId, setExpenseId] = useState("");
+  const [showActivateButton, setShowActivateButton] = useState(false);
+  const [isPremiumActivated, setIsPremiumActivated] = useState(false);
+  const [state, dispatch] = useReducer(themeReducer, initialState);
 
   useEffect(() => {
     fetchExpenses();
   }, []);
 
+  useEffect(() => {
+    setShowActivateButton(
+      products.reduce(
+        (total, product) => total + Number(product.moneySpent),
+        0
+      ) > 10000 && !isPremiumActivated
+    );
+  }, [products, isPremiumActivated]);
+
+  const handleActivatePremium = () => {
+    setIsPremiumActivated(true);
+  };
+
+  const handleToggleTheme = () => {
+    dispatch({ type: "TOGGLE_THEME" });
+  };
+
+  const handleDownloadFile = () => {
+    const csvContent = "data:text/csv;charset=utf-8," + convertToCSV(products);
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "expenses.csv");
+    document.body.appendChild(link);
+    link.click();
+  };
+
+  const convertToCSV = (data) => {
+    const headers = Object.keys(data[0]);
+    const rows = data.map((row) =>
+      headers.map((header) => JSON.stringify(row[header])).join(",")
+    );
+    return [headers.join(","), ...rows].join("\n");
+  };
+
   const fetchExpenses = () => {
     axios
-      .get("https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses.json")
+      .get(
+        `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses.json`
+      )
       .then((response) => {
         if (response.data) {
-          const expenses = Object.entries(response.data).map(([id, expense]) => ({
-            id,
-            ...expense,
-          }));
+          const expenses = Object.entries(response.data).map(
+            ([id, expense]) => ({
+              id,
+              ...expense,
+            })
+          );
           setProducts(expenses);
         }
       })
@@ -57,7 +116,6 @@ const AddExpense = () => {
     setExpenseId("");
 
     if (expenseId) {
-      // Update existing expense
       axios
         .put(
           `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses/${expenseId}.json`,
@@ -71,7 +129,6 @@ const AddExpense = () => {
           console.log("Error updating expense:", error);
         });
     } else {
-      // Add new expense
       axios
         .post(
           "https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses.json",
@@ -95,7 +152,9 @@ const AddExpense = () => {
       .then((response) => {
         console.log("Expense successfully deleted!");
         fetchExpenses();
-        setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== id)
+        );
       })
       .catch((error) => {
         console.log("Error deleting expense:", error);
@@ -113,16 +172,10 @@ const AddExpense = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: "url(cart.avif)",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        padding: "1rem",
-      }}
-    >
-      <h1 style={{ textAlign: "center", fontFamily: "serif", fontWeight: "bold" }}>
+    <div className={`app ${state.theme}`}>
+      <h1
+        style={{ textAlign: "center", fontFamily: "serif", fontWeight: "bold" }}
+      >
         Daily Expense
       </h1>
       <br />
@@ -160,6 +213,9 @@ const AddExpense = () => {
                 <option value="Food">Food</option>
                 <option value="Petrol">Petrol</option>
                 <option value="Salary">Salary</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Grocery">Grocery</option>
+                <option value="Furniture">Furniture</option>
               </Form.Control>
             </Form.Group>
           </Col>
@@ -177,7 +233,11 @@ const AddExpense = () => {
             {products.map((product) => (
               <ListGroup.Item
                 key={product.id}
-                style={{ backgroundColor: "#98ecd2", display: "flex", justifyContent: "space-between" }}
+                style={{
+                  backgroundColor: "#98ecd2",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
               >
                 <div>
                   <p>Money Spent: {product.moneySpent}</p>
@@ -185,10 +245,16 @@ const AddExpense = () => {
                   <p>Category: {product.category}</p>
                 </div>
                 <div>
-                  <Button variant="danger" onClick={() => handleExpenseDelete(product.id)}>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleExpenseDelete(product.id)}
+                  >
                     Delete
                   </Button>{" "}
-                  <Button variant="info" onClick={() => handleExpenseEdit(product.id)}>
+                  <Button
+                    variant="info"
+                    onClick={() => handleExpenseEdit(product.id)}
+                  >
                     Edit
                   </Button>{" "}
                 </div>
@@ -198,6 +264,29 @@ const AddExpense = () => {
         ) : (
           <p>No products added yet.</p>
         )}
+        {showActivateButton && !isPremiumActivated && (
+          <Button variant="primary" onClick={handleActivatePremium}>
+            Activate Premium
+          </Button>
+        )}
+
+        {isPremiumActivated && (
+          <Button
+            variant="secondary"
+            onClick={handleToggleTheme}
+            style={{ marginLeft: "1rem" }}
+          >
+            Toggle Theme
+          </Button>
+        )}
+
+        <Button
+          variant="success"
+          onClick={handleDownloadFile}
+          style={{ marginLeft: "1rem" }}
+        >
+          Download File
+        </Button>
       </div>
     </div>
   );
