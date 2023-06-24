@@ -18,7 +18,7 @@ const themeReducer = (state, action) => {
 };
 
 const AddExpense = () => {
-  // const emailRegEx = localStorage.getItem("email");
+  const emailRegEx = localStorage.getItem("email");
 
   const [moneySpent, setMoneySpent] = useState("");
   const [description, setDescription] = useState("");
@@ -31,6 +31,7 @@ const AddExpense = () => {
 
   useEffect(() => {
     fetchExpenses();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -71,7 +72,7 @@ const AddExpense = () => {
   const fetchExpenses = () => {
     axios
       .get(
-        `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses.json`
+        `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses/${emailRegEx}.json`
       )
       .then((response) => {
         if (response.data) {
@@ -118,7 +119,7 @@ const AddExpense = () => {
     if (expenseId) {
       axios
         .put(
-          `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses/${expenseId}.json`,
+          `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses/${emailRegEx}/${expenseId}.json`,
           newProduct
         )
         .then((response) => {
@@ -131,7 +132,7 @@ const AddExpense = () => {
     } else {
       axios
         .post(
-          "https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses.json",
+          `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses/${emailRegEx}.json`,
           newProduct
         )
         .then((response) => {
@@ -147,7 +148,7 @@ const AddExpense = () => {
   const handleExpenseDelete = (id) => {
     axios
       .delete(
-        `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses/${id}.json`
+        `https://expense-tracker-c5ab0-default-rtdb.firebaseio.com/expenses/${emailRegEx}/${id}.json`
       )
       .then((response) => {
         console.log("Expense successfully deleted!");
